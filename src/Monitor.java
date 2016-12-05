@@ -1,11 +1,13 @@
 import java.io.*;
 import java.net.*;
 import java.util.Calendar;
+import java.util.regex.Pattern;
 
 public class Monitor {
 	
 	//public static String targetURL = "https://shop.exclucitylife.com/products/nike-air-foamposite-pro";
 	public static String targetURL; 
+	public static String searchContent;
 	public static String output; 
 	
 	private static String timeTo2String(int timeInt){
@@ -28,7 +30,11 @@ public class Monitor {
 		targetURL = text;
 	}
 	
-	public static void main(String[] args) {
+	public void setSearchContent(String text){
+		searchContent = text;
+	}
+	
+	public void readSourceCode(String[] args) {
 	    URL url;
 	    InputStream is = null;
 	    BufferedReader br;
@@ -56,11 +62,15 @@ public class Monitor {
 	            StringWriter strOut = new StringWriter();
 	            
 		        while ((line = br.readLine()) != null) {
-		            //System.out.println(line);
-		        	
-		            writer.println(line);
-		            strOut.write(lineNumber.toString()+":    "+line);
-		            strOut.write("\n");
+		            //System.out.println(searchContent);
+		        	if (Pattern.compile(Pattern.quote(searchContent), Pattern.CASE_INSENSITIVE).matcher(line).find()){
+		        		strOut.write(lineNumber.toString()+":    "+line);
+			            strOut.write("\n");
+			            //System.out.print("3");
+		        	}else{
+		        		//System.out.print(searchContent);
+		        	}
+		            writer.println(line);		            
 		            lineNumber++;
 		        }
 	            writer.close();
