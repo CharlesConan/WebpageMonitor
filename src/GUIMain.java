@@ -13,12 +13,12 @@ public class GUIMain extends javax.swing.JDialog {
     /**
      * Creates new form NewJDialog
      */
-	Monitor monitor;
+	//Monitor monitor;
 	
     public GUIMain(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();    
-        monitor = new Monitor();
+        
     }
 
 
@@ -108,20 +108,23 @@ public class GUIMain extends javax.swing.JDialog {
         pack();
     }// </editor-fold>                        
     
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {                                             
-        monitor.setTargetURL(jTextPane1.getText());
-        monitor.setSearchContent(jTextPane2.getText());    
-        monitor.readSourceCode(null);
-        //System.out.println("4");
-        jTextArea1.setText(monitor.output);
-        //System.out.println("5");
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {   
+    	ControlThread controlThread = new ControlThread(1, jTextPane1.getText(), jTextPane2.getText());
+    	controlThread.start();
+    	while(controlThread.isAlive()){		
+    	}
+    	jTextArea1.setText(controlThread.getOutput());
+
     }      
     
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {
     	jTextPane2.setText("variant");
-    	monitor.setSearchContent("variant");
-    	monitor.readSourceCode(null);
-        jTextArea1.setText(monitor.output);
+    	ControlThread controlThread = new ControlThread(2, jTextPane1.getText(), jTextPane2.getText());
+    	controlThread.start();
+    	while(controlThread.isAlive()){
+    		System.out.print("10"); 		
+    	}
+        jTextArea1.setText(controlThread.getOutput());
     } 
 
     /**
