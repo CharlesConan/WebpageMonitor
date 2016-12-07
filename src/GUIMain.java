@@ -1,3 +1,5 @@
+import javax.swing.JTextArea;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -14,6 +16,7 @@ public class GUIMain extends javax.swing.JDialog {
      * Creates new form NewJDialog
      */
 	//Monitor monitor;
+	//public static JTextArea jTextArea1;
 	
     public GUIMain(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
@@ -113,7 +116,7 @@ public class GUIMain extends javax.swing.JDialog {
     	controlThread.start();
     	while(controlThread.isAlive()){		
     	}
-    	jTextArea1.setText(controlThread.getOutput());
+    	//jTextArea1.setText(controlThread.getOutput());
 
     }      
     

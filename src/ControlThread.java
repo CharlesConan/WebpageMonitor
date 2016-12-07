@@ -5,8 +5,10 @@ public class ControlThread extends Thread {
 	private String textPane1;
 	private String textPane2;
 	Monitor monitor;
+	//GUIMain guiMain;
 	
 	public ControlThread(int type, String text1, String text2){
+		//guiMain = new GUIMain();
 		this.threadType=type;
 		textPane1=text1;
 		textPane2=text2;
@@ -22,7 +24,7 @@ public class ControlThread extends Thread {
 		switch (threadType) {
 			case 1:
 				monitor.setTargetURL(textPane1);
-		        monitor.setSearchContent(textPane2);    
+		        monitor.setSearchContent(textPane2);
 		        monitor.readSourceCode(null);	
 		        break;
 			case 2:
