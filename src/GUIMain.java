@@ -1,4 +1,7 @@
-import javax.swing.JTextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.Timer;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -10,18 +13,16 @@ import javax.swing.JTextArea;
  *
  * @author Hao
  */
-public class GUIMain extends javax.swing.JDialog {
+public class GUIMain extends javax.swing.JFrame {
 
     /**
      * Creates new form NewJDialog
      */
-	//Monitor monitor;
-	//public static JTextArea jTextArea1;
+	Monitor monitor;
 	
-    public GUIMain(java.awt.Frame parent, boolean modal) {
-        super(parent, modal);
+    public GUIMain() {
         initComponents();    
-        
+        monitor = new Monitor();
     }
 
 
@@ -111,24 +112,27 @@ public class GUIMain extends javax.swing.JDialog {
         pack();
     }// </editor-fold>                        
     
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {   
-    	ControlThread controlThread = new ControlThread(1, jTextPane1.getText(), jTextPane2.getText());
-    	controlThread.start();
-    	while(controlThread.isAlive()){		
-    	}
-    	//jTextArea1.setText(controlThread.getOutput());
-
-    }      
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {      	
+	    ActionListener update;
+	    update = new ActionListener(){
+	        @Override
+	        public void actionPerformed(ActionEvent e){
+	        	monitor.setTargetURL(jTextPane1.getText());
+	            monitor.setSearchContent(jTextPane2.getText());    
+	            monitor.readSourceCode(null);
+	            jTextArea1.setText(monitor.getOutput());
+	        }
+	    };
+	    Timer t = new Timer(5000, update);
+	    t.start(); 
+   }      
     
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {
     	jTextPane2.setText("variant");
-    	ControlThread controlThread = new ControlThread(2, jTextPane1.getText(), jTextPane2.getText());
-    	controlThread.start();
-    	while(controlThread.isAlive()){
-    		System.out.print("10"); 		
-    	}
-        jTextArea1.setText(controlThread.getOutput());
+    	monitor.setSearchContent("variant");
+        jTextArea1.setText(monitor.getOutput());
     } 
+
 
     /**
      * @param args the command line arguments
@@ -160,15 +164,9 @@ public class GUIMain extends javax.swing.JDialog {
 
         /* Create and display the dialog */
         java.awt.EventQueue.invokeLater(new Runnable() {
+        	@Override
             public void run() {
-                GUIMain dialog = new GUIMain(new javax.swing.JFrame(), true);
-                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                    @Override
-                    public void windowClosing(java.awt.event.WindowEvent e) {
-                        System.exit(0);
-                    }
-                });
-                dialog.setVisible(true);
+                new GUIMain().setVisible(true);
             }
         });
     }

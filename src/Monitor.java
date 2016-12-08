@@ -8,7 +8,7 @@ public class Monitor {
 	//public static String targetURL = "https://shop.exclucitylife.com/products/nike-air-foamposite-pro";
 	public static String targetURL; 
 	public static String searchContent;
-	public static String output; 
+	private String output; 
 	
 	private static String timeTo2String(int timeInt){
 		if (timeInt<10){
@@ -34,6 +34,10 @@ public class Monitor {
 		searchContent = text;
 	}
 	
+	public String getOutput(){
+		return output;
+	}
+	
 	public void readSourceCode(String[] args) {
 	    URL url;
 	    InputStream is = null;
@@ -56,6 +60,10 @@ public class Monitor {
 	        url = new URL(targetURL);
 	        is = url.openStream();  // throws an IOException
 	        br = new BufferedReader(new InputStreamReader(is));
+	        
+//	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//	        Long dateTime = connection.getLastModified();
+//	        //System.out.println(Long.toString(dateTime));
 
 	        try{
 	            PrintWriter writer = new PrintWriter(timeAsString+".txt", "UTF-8");
