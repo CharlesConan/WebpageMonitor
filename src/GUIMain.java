@@ -18,10 +18,10 @@ public class GUIMain extends javax.swing.JFrame {
     /**
      * Creates new form NewJDialog
      */
-	private final int LOOPTIME = 5000; //Check web page every 5 seconds.
+	private final int LOOPTIME = 500; //Check web page every 5 seconds.
 	Monitor monitor;
 	Timer timer;
-	
+	String variant;
     public GUIMain() {
         initComponents();    
         monitor = new Monitor();
@@ -46,6 +46,9 @@ public class GUIMain extends javax.swing.JFrame {
         jTextPane1 = new javax.swing.JTextPane();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTextPane2 = new javax.swing.JTextPane();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTextPane3 = new javax.swing.JTextPane();
+        jButton4 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,6 +81,15 @@ public class GUIMain extends javax.swing.JFrame {
 
         jScrollPane3.setViewportView(jTextPane2);
 
+        jScrollPane4.setViewportView(jTextPane3);
+
+        jButton4.setText("number");
+        jButton4.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton4MouseClicked(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -90,7 +102,11 @@ public class GUIMain extends javax.swing.JFrame {
                         .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(35, 35, 35)
                         .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
+                        .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(35, 35, 35)
                         .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 800, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -106,32 +122,49 @@ public class GUIMain extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(34, 34, 34)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                        .addComponent(jButton2)
-                        .addComponent(jButton3))
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jButton2)
+                            .addComponent(jButton3)
+                            .addComponent(jButton4))
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(35, 35, 35)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 700, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(43, Short.MAX_VALUE))
         );
 
         pack();
-    }// </editor-fold>          
+    }// </editor-fold>            
     
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {      	
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {   
+    	variant = jTextPane3.getText();
+    	monitor.setSearchNumberString(variant);
 	    ActionListener update;
 	    update = new ActionListener(){
 	        @Override
 	        public void actionPerformed(ActionEvent e){
 	        	monitor.setTargetURL(jTextPane1.getText());
-	            monitor.setSearchContent(jTextPane2.getText());    
+	            monitor.setSearchContent(jTextPane2.getText());
+	            //variant = this.incrementVariant(variant);
+	            //monitor.setSearchNumberString(variant);
+	            //System.out.println("3");
 	            monitor.readSourceCode(null);
+	            //System.out.println("4");
 	            jTextArea1.setText(monitor.getOutput());
+//	            if (monitor.getOutput()!=null){
+//	    	    	timer.stop();
+//	    	    }
 	        }
+
+			private String incrementVariant(String text){
+				long temp = Long.parseLong(text)+64;
+				return Long.toString(temp);
+			}
 	    };
 	    timer = new Timer(LOOPTIME, update);
-	    timer.start(); 
+	    timer.start();
    }      
     
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {
@@ -144,7 +177,16 @@ public class GUIMain extends javax.swing.JFrame {
         timer.stop();
         //System.out.println("7");
     }   
+    
+    private void jButton4MouseClicked(java.awt.event.MouseEvent evt) {                                      
+        //timer.stop();
+        //System.out.println("7");
+    } 
 
+	public String incrementVariant(String text){
+		long temp = Long.parseLong(text)+64;
+		return Long.toString(temp)+":1";
+	}
 
     /**
      * @param args the command line arguments
@@ -183,16 +225,19 @@ public class GUIMain extends javax.swing.JFrame {
         });
     }
 
-    // Variables declaration - do not modify                     
+    // Variables declaration - do not modify   
     
-    private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
+    private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
+    private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JTextArea jTextArea1;
     private javax.swing.JTextPane jTextPane1;
     private javax.swing.JTextPane jTextPane2;
+    private javax.swing.JTextPane jTextPane3;
     // End of variables declaration                  
 }
