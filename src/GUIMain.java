@@ -18,13 +18,14 @@ public class GUIMain extends javax.swing.JFrame {
     /**
      * Creates new form NewJDialog
      */
-	private final int LOOPTIME = 500; //Check web page every 5 seconds.
+	private final int LOOPTIME = 5000; //Check web page every 1 seconds.
 	Monitor monitor;
 	Timer timer;
 	String variant;
     public GUIMain() {
         initComponents();    
         monitor = new Monitor();
+        //initSetting();
     }
 
 
@@ -136,41 +137,49 @@ public class GUIMain extends javax.swing.JFrame {
         );
 
         pack();
-    }// </editor-fold>            
+    }// </editor-fold>       
     
-    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {   
-    	variant = jTextPane3.getText();
-    	monitor.setSearchNumberString(variant);
+    private void initSetting(){
+    	jTextPane1.setText("https://shop.exclucitylife.com/cart/");
+    	jTextPane2.setText("description");
+    }
+    
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {
+    	
+//    	variant = jTextPane3.getText();
+//    	monitor.setSearchNumberString(variant);
 	    ActionListener update;
 	    update = new ActionListener(){
 	        @Override
 	        public void actionPerformed(ActionEvent e){
 	        	monitor.setTargetURL(jTextPane1.getText());
-	            monitor.setSearchContent(jTextPane2.getText());
+	            //monitor.setSearchContent(jTextPane2.getText());
 	            //variant = this.incrementVariant(variant);
 	            //monitor.setSearchNumberString(variant);
 	            //System.out.println("3");
 	            monitor.readSourceCode(null);
 	            //System.out.println("4");
 	            jTextArea1.setText(monitor.getOutput());
+	            jTextPane2.setText(monitor.getCurrentTime());
+	            jTextPane3.setText(monitor.getURLStatus());
 //	            if (monitor.getOutput()!=null){
 //	    	    	timer.stop();
 //	    	    }
 	        }
 
-			private String incrementVariant(String text){
-				long temp = Long.parseLong(text)+64;
-				return Long.toString(temp);
-			}
+//			private String incrementVariant(String text){
+//				long temp = Long.parseLong(text)+64;
+//				return Long.toString(temp);
+//			}
 	    };
 	    timer = new Timer(LOOPTIME, update);
 	    timer.start();
    }      
     
     private void jButton2MouseClicked(java.awt.event.MouseEvent evt) {
-    	jTextPane2.setText("variant");
-    	monitor.setSearchContent("variant");
-        jTextArea1.setText(monitor.getOutput());
+//    	jTextPane2.setText("variant");
+//    	monitor.setSearchContent("variant");
+//        jTextArea1.setText(monitor.getOutput());
     }                                
 
     private void jButton3MouseClicked(java.awt.event.MouseEvent evt) {                                      

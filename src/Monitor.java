@@ -8,9 +8,9 @@ public class Monitor {
 	//public static String targetURL = "https://shop.exclucitylife.com/products/nike-air-foamposite-pro";
 	private String targetURL; 
 	private String searchContent;
-	private String searchNumberString;
-	private long searchNumber;
 	private String output; 
+	private String currentTime;
+	private String urlStatus;
 	
 	private static String timeTo2String(int timeInt){
 		if (timeInt<10){
@@ -36,10 +36,6 @@ public class Monitor {
 		searchContent = text;
 	}
 	
-	public void setSearchNumberString(String text){
-		searchNumberString = text;
-		searchNumber = Long.parseLong(text);
-	}
 	
 //	public String convertSearchNumber(String text){
 //	long temp = Long.parseLong(text);
@@ -55,14 +51,16 @@ public class Monitor {
 		return output;
 	}
 	
-	public void readSourceCode(String[] args) {
-	    URL url;
-	    InputStream is = null;
-	    BufferedReader br;
-	    String line;
-	    Integer lineNumber = 0;
-	    
-	    long millis=System.currentTimeMillis();
+	public String getCurrentTime(){
+		return currentTime;
+	}
+	
+	public String getURLStatus(){
+		return urlStatus;
+	}
+	
+	public void checkTime(){
+		long millis=System.currentTimeMillis();
 	    Calendar c=Calendar.getInstance();
 	    c.setTimeInMillis(millis);
 	    int years=c.get(Calendar.YEAR);
@@ -72,12 +70,24 @@ public class Monitor {
 	    int minutes=c.get(Calendar.MINUTE);
 	    int seconds=c.get(Calendar.SECOND);
 	    int milliseconds=c.get(Calendar.MILLISECOND);
-	    String timeAsString = Integer.toString(years)+timeTo2String(months)+timeTo2String(days)+timeTo2String(hours)+timeTo2String(minutes)+timeTo2String(seconds)+timeTo3String(milliseconds);
+	    currentTime = Integer.toString(years)+timeTo2String(months)+timeTo2String(days)+timeTo2String(hours)+timeTo2String(minutes)+timeTo2String(seconds)+timeTo3String(milliseconds);	    
+	}
+	
+	public void readSourceCode(String[] args) {
+	    URL url;
+	    InputStream is = null;
+	    BufferedReader br;
+	    String line;
+	    Integer lineNumber = 0;
+	    int n=0;
+	    
+	    this.checkTime();
 	    try {
 	    	//System.out.println("1");
-	        url = new URL(targetURL+Long.toString(searchNumber)+":1");
+	        url = new URL(targetURL);
 	        is = url.openStream();  // throws an IOException
 	        br = new BufferedReader(new InputStreamReader(is));
+	        urlStatus="live";
 	        //System.out.println("2");
 	        
 //	        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
@@ -85,29 +95,15 @@ public class Monitor {
 //	        //System.out.println(Long.toString(dateTime));
 
 	        try{
-	            PrintWriter writer = new PrintWriter(timeAsString+".txt", "UTF-8");
+	            PrintWriter writer = new PrintWriter(currentTime+".txt", "UTF-8");
 	            StringWriter strOut = new StringWriter();
 	            
 		        while ((line = br.readLine()) != null) {
-		            //System.out.println(searchContent);
-		        	if (Pattern.compile(Pattern.quote("try again"), Pattern.CASE_INSENSITIVE).matcher(line).find()){
-		        		System.out.println("OOPS");
-		        	}else if (Pattern.compile(Pattern.quote(searchContent), Pattern.CASE_INSENSITIVE).matcher(line).find()){
 		        		strOut.write(lineNumber.toString()+":    "+line);
 			            strOut.write("\n");
-			            writer.println(line);
-			            //System.out.print("3");
-		        	}else{
-		        		//System.out.print(searchContent);
-		        	}
-		            //writer.println(line);		            
-		            lineNumber++;
-		            
+			            writer.println(line);	            
+		            lineNumber++;		            
 		        }
-		        strOut.write(Long.toString(searchNumber));
-	            strOut.write("\n");
-		        writer.println(Long.toString(searchNumber));
-		        searchNumber+=640;
 	            writer.close();
 	            output = strOut.toString();
 	            //System.out.print(output);
@@ -120,12 +116,8 @@ public class Monitor {
 	         mue.printStackTrace();
 	    } catch (IOException ioe) {
 	         ioe.printStackTrace();
-	    	if (ioe.getMessage().toLowerCase().contains("response")){
-	    		System.out.println(ioe.getMessage());
-	    	}else{
-	    		searchNumber+=640;
-	    	}
-	         
+	         //System.out.println(n);
+	         urlStatus = "error";
 	    } finally {
 	        try {
 	            if (is != null) is.close();
