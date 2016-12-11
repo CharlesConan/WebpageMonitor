@@ -11,6 +11,13 @@ public class Monitor {
 	private String output; 
 	private String currentTime;
 	private String urlStatus;
+	private int years;
+	private int months;
+	private int days;
+	private int hours;
+	private int minutes;
+	private int seconds;
+	private int milliseconds;
 	
 	private static String timeTo2String(int timeInt){
 		if (timeInt<10){
@@ -55,6 +62,38 @@ public class Monitor {
 		return currentTime;
 	}
 	
+	public String getCurrentYear(){
+		return Integer.toString(years);
+	}
+	
+	public String getCurrentMonth(){
+		return this.timeTo2String(months);
+	}
+	
+	public String getCurrentDay(){
+		return this.timeTo2String(days);
+	}
+	
+	public String getCurrentHour(){
+		return this.timeTo2String(hours);
+	}
+	
+	public String getCurrentMinute(){
+		return this.timeTo2String(minutes);
+	}
+	
+	public String getCurrentSecond(){
+		return this.timeTo2String(seconds);
+	}
+	
+	public String getCurrentMillisecond(){
+		return this.timeTo3String(milliseconds);
+	}
+	
+//	public String getCurrentTime(){
+//		return currentTime;
+//	}
+	
 	public String getURLStatus(){
 		return urlStatus;
 	}
@@ -63,13 +102,13 @@ public class Monitor {
 		long millis=System.currentTimeMillis();
 	    Calendar c=Calendar.getInstance();
 	    c.setTimeInMillis(millis);
-	    int years=c.get(Calendar.YEAR);
-	    int months=c.get(Calendar.MONTH)+1;
-	    int days=c.get(Calendar.DATE);
-	    int hours=c.get(Calendar.HOUR_OF_DAY);
-	    int minutes=c.get(Calendar.MINUTE);
-	    int seconds=c.get(Calendar.SECOND);
-	    int milliseconds=c.get(Calendar.MILLISECOND);
+	    years=c.get(Calendar.YEAR);
+	    months=c.get(Calendar.MONTH)+1;
+	    days=c.get(Calendar.DATE);
+	    hours=c.get(Calendar.HOUR_OF_DAY);
+	    minutes=c.get(Calendar.MINUTE);
+	    seconds=c.get(Calendar.SECOND);
+	    milliseconds=c.get(Calendar.MILLISECOND);
 	    currentTime = Integer.toString(years)+timeTo2String(months)+timeTo2String(days)+timeTo2String(hours)+timeTo2String(minutes)+timeTo2String(seconds)+timeTo3String(milliseconds);	    
 	}
 	
